@@ -8,8 +8,7 @@ load_dotenv()
 def main():
     check_env(["API_KEY", "SECRET"])
     driver = Driver()
-    stocks = ["AAPL", "MSFT"]
-    print(driver.daily(stocks))
+    print(driver.assets())
 
 
 if __name__ == "__main__":

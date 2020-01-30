@@ -34,6 +34,14 @@ You need to create a `.env` file at the root with this content:
 - In your browser, go to `localhost:7474` to open the neat data visualizer
 - Default password = default user = `neo4j`
 
+## Install MongoDB
+
+Follow instructions on [MongoDB official website](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)
+
+## Run MongoDB
+
+    sudo service mongod start
+
 ## Install dependencies
 
 `pip3 install --user -r requirements.txt`
