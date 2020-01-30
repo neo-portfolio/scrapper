@@ -2,6 +2,13 @@
 
 A scrapper to create the Neo4j database
 
+# Environment
+
+You need to create a `.env` file at the root with this content:
+
+    API_KEY=<alpaca api key>
+    SECRET=<alpaca secret>
+
 # Installation
 
 ### Clone:
