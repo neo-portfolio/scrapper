@@ -25,4 +25,3 @@ class Driver:
         response: requests.Response = self.__get("assets", True)
         data: List[Dict[str, str]] = json.loads(response.content)
         return [stock["symbol"] for stock in data]
-

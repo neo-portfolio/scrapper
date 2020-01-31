@@ -45,3 +45,7 @@ Follow instructions on [MongoDB official website](https://docs.mongodb.com/manua
 ## Install dependencies
 
 `pip3 install --user -r requirements.txt`
+
+# Load assets names in DB
+
+`python src/load_assets.py`
