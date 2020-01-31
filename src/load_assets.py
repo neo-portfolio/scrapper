@@ -13,7 +13,8 @@ def main():
     collection = db.stock
     collection.create_index("symbol", unique=True)  # Create Index
     assets = alpaca_driver.assets()  # Fetch assets
-    to_insert = [{"symbol": asset, "data": None} for asset in set(assets)]  # set to deal with duplications
+    to_insert = [{"symbol": asset, "sd": None, "expected_returns": None,  "data": None} for asset in set(assets)]
+    # set to deal with duplications
     try:
         result = collection.insert_many(to_insert)  # Do the import
         print(result.inserted_ids)
