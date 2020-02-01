@@ -13,11 +13,23 @@ def main():
     driver = Driver()
 
     mongo_client = pymongo.MongoClient("localhost", 27017)  # Connect to MongoDB
+    mongo_client.drop_database('stocks')
     db = mongo_client.stocks  # Nom database
     collection = db.stock  # Catégorie
+    collection.create_index("symbol", unique=True)  # Create Index
 
     # Load asset names
     assets = driver.assets()
+
+    # S&P data
+    sp = driver.daily(["SPY"], 1000)
+    sp = [period['c'] for period in sp['SPY']]
+    sp = np.array(sp)
+    sp = np.diff(np.log(sp))
+    sp = sp[1:]
+    rm = sp.mean()
+    rf = 0.02**(1/252)
+    rp = rm-rf
 
     nb_request = 200
     for i in range(0, len(assets), nb_request):
@@ -33,30 +45,17 @@ def main():
                 close = close[1:]
                 r = close.mean()
                 std = close.std()
-                query = {"symbol": key}
-                update = {'$set': {"sd": std, "expected_returns": r, "data": list(close)}}
+                beta = np.corrcoef(sp, close)[0, 1]
+                alpha = r-rf-beta*rp
+                query = {"symbol": key, "sd": std, "expected_returns": r, "beta": beta, "alpha": alpha, "data": list(close)}
 
-                if np.isnan(close).any():
+                if not np.isnan(close).any():
+
                     try:
-                        result = collection.delete_one(query)  # Delete none data stocks
+                        result = collection.insert(query)  # Do the update
                     except pymongo.errors.BulkWriteError as bwe:
                         print(bwe.details)
                         print("\nAn error occured during import, read the text before for further details")
-
-                else:
-                    try:
-                        result = collection.update_one(query, update)  # Do the update
-                    except pymongo.errors.BulkWriteError as bwe:
-                        print(bwe.details)
-                        print("\nAn error occured during import, read the text before for further details")
-
-            else:
-                query = {"symbol": key}
-                try:
-                    result = collection.delete_one(query)  # Delete none data stocks
-                except pymongo.errors.BulkWriteError as bwe:
-                    print(bwe.details)
-                    print("\nAn error occured during import, read the text before for further details")
 
 
 if __name__ == "__main__":
