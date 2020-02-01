@@ -2,6 +2,7 @@ import pymongo
 from dotenv import load_dotenv
 from alpaca import Driver
 from check_env import check_env
+import os
 
 
 def main():
