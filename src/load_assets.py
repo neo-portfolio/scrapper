@@ -10,8 +10,8 @@ def main():
     check_env(["API_KEY", "SECRET"])  # Load env variables
     alpaca_driver = Driver()  # Init driver
     mongo_client = pymongo.MongoClient("localhost", 27017)  # Connect to MongoDB
-    db = mongo_client.stocks
-    collection = db.stock
+    db = mongo_client.stocks  # Nom database
+    collection = db.stock  # Catégorie
     collection.create_index("symbol", unique=True)  # Create Index
     assets = alpaca_driver.assets()  # Fetch assets
     to_insert = [{"symbol": asset, "sd": None, "expected_returns": None,  "data": None} for asset in set(assets)]
