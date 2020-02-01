@@ -41,6 +41,12 @@ Follow instructions on [MongoDB official website](https://docs.mongodb.com/manua
 ## Run MongoDB
 
     sudo service mongod start
+    
+## Install RabbitMQ
+
+Install Erlang [Here](https://tecadmin.net/install-erlang-on-ubuntu/)
+
+Follow instructions on [RabbitMQ website](https://www.fosslinux.com/6339/how-to-install-rabbitmq-server-on-ubuntu-18-04-lts.htm)
 
 ## Install dependencies
 
