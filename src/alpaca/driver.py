@@ -22,6 +22,6 @@ class Driver:
         return json.loads(response.content)
 
     def assets(self) -> List[str]:
-        response: requests.Response = self.__get("assets", True)
+        response: requests.Response = self.__get("assets?status=active", True)
         data: List[Dict[str, str]] = json.loads(response.content)
         return [stock["symbol"] for stock in data]
