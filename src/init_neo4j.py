@@ -1,8 +1,12 @@
 from neo4j import GraphDatabase
-from typing import Dict
+from dotenv import load_dotenv
+import os
 import pymongo
 
-driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "test1234"))
+load_dotenv()
+
+
+driver = GraphDatabase.driver("bolt://%s:7687" % os.getenv("NEO_URL"), encrypted=False)
 
 
 def make_query(symbol: str, sd: float, expected_returns: float, beta: float, alpha: float):
@@ -17,7 +21,10 @@ def init_neo4j():
     elems = collection.find()
 
     with driver.session() as session:
-        session.run("CREATE CONSTRAINT ON (c: Company) ASSERT c.symbol IS UNIQUE")
+        try:
+            session.run("CREATE CONSTRAINT ON (c: Company) ASSERT c.symbol IS UNIQUE")
+        except:
+            pass
         for elem in elems:
             del elem["_id"]
             del elem["data"]
