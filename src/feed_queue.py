@@ -3,7 +3,8 @@ import pika
 import os
 from dotenv import load_dotenv
 from check_env import check_env
-from alpaca import Driver
+import pymongo
+from typing import List
 
 
 def register_channel(channel):
@@ -13,11 +14,17 @@ def register_channel(channel):
     return push_message
 
 
+def get_assets() -> List[str]:
+    mongo_client = pymongo.MongoClient("localhost", 27017)  # Connect to MongoDB
+    db = mongo_client.stocks  # Nom database
+    collection = db.stock  # Catégorie
+    return [item["symbol"] for item in collection.find({}, {"symbol": 1})]
+
+
 def feed_queue(channel):
     channel.queue_declare(queue='stocks', durable=True)
-    driver = Driver()
     push_message = register_channel(channel)
-    stocks = driver.assets()
+    stocks = get_assets()
     length = len(stocks)
     for i in range(length):
         for j in range(i + 1, length):

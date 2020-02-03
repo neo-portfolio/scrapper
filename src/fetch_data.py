@@ -28,8 +28,8 @@ def main():
     sp = np.diff(np.log(sp))
     sp = sp[1:]
     rm = sp.mean()
-    rf = 0.02**(1/252)
-    rp = rm-rf
+    rf = 0.02 ** (1 / 252)
+    rp = rm - rf
 
     nb_request = 200
     for i in range(0, len(assets), nb_request):
@@ -46,8 +46,9 @@ def main():
                 r = close.mean()
                 std = close.std()
                 beta = np.corrcoef(sp, close)[0, 1]
-                alpha = r-rf-beta*rp
-                query = {"symbol": key, "sd": std, "expected_returns": r, "beta": beta, "alpha": alpha, "data": list(close)}
+                alpha = r - rf - beta * rp
+                query = {"symbol": key, "sd": std, "expected_returns": r, "beta": beta, "alpha": alpha,
+                         "data": list(close)}
 
                 if not np.isnan(close).any():
 
