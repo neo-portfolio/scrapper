@@ -17,7 +17,7 @@ class Worker:
         mongo_client = pymongo.MongoClient(os.getenv("MONGO_URL"), 27017)  # Connect to MongoDB
         db = mongo_client.stocks  # Nom database
         self.__collection = db.stock  # Catégorie
-        self.__driver = GraphDatabase.driver("bolt://%s:7687" % os.getenv("NEO_URL"))
+        self.__driver = GraphDatabase.driver("bolt://%s:7687" % os.getenv("NEO_URL"), encrypted=False)
         credentials = pika.PlainCredentials('admin', 'test1234')
         connection = pika.BlockingConnection(
             pika.ConnectionParameters(host=os.getenv("QUEUE_URL"), credentials=credentials))
