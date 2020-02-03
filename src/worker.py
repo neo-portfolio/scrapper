@@ -53,7 +53,7 @@ class Worker:
 
     @staticmethod
     def make_query(symbol1, symbol2, corr12):
-        return "MATCH (a:Company {name: '%s'}), (b:Company {name: '%s'})\
+        return "MATCH (a:Company {symbol: '%s'}), (b:Company {symbol: '%s'})\
         CREATE (a)-[:Correlated {corr: %d}]->(b)" % (symbol1, symbol2, corr12)
 
 
